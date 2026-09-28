@@ -1,0 +1,25 @@
+{
+  "event": "submission.created",
+  "submitted_at": "2026-09-28T07:54:00Z",
+  "form": {
+    "id": "frm_01HXXABCDEF",
+    "form_id": "f_abc12345",
+    "name": "Contact form"
+  },
+  "submission": {
+    "id": "sub_01HXX1234567",
+    "data": {
+      "name": "Ada Lovelace",
+      "email": "ada@example.com",
+      "message": "Hi! We'd like to discuss Pro pricing for a 5-person team."
+    },
+    "is_spam": false,
+    "spam_confidence": 0.02,
+    "intent_label": "sales",
+    "intent_confidence": 0.93,
+    "is_high_value": true,
+    "ai_summary": "Visitor asks about pricing; mentions a 5-person team.",
+    "ip_address": "203.0.113.5",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+  }
+}

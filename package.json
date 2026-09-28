@@ -1,0 +1,13 @@
+{
+  "name": "smartform-example-webhook-discord",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0",
+    "typescript": "^5.0.0"
+  }
+}
