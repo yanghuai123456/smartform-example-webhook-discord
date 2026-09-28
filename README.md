@@ -144,29 +144,6 @@ curl -X POST http://localhost:3000/api/webhook \
 
 ## FAQ
 
-### Why use this instead of Formspree?
-
-At the basic level, SmartForm and Formspree are very similar: get a
-form ID, POST a plain HTML form to a hosted endpoint with `_gotcha`
-for spam filtering, and the API delivers the submission. The reserved
-fields (`_gotcha`, `_next`, `_subject`, honeypot aliases) are
-Formspree-compatible — a migration does not require renaming
-anything.
-
-The differences are operational, not API surface:
-
-- **No email confirmation flow.** Formspree requires verifying your
-  domain before submissions reach your inbox; SmartForm submissions
-  land in your dashboard immediately.
-- **AI spam filtering on the free tier.** Formspree's free tier uses
-  only a honeypot field, which catches naive bots but lets semantic
-  spam through. SmartForm applies AI-based classification by default,
-  free of charge.
-- **AI intent classification** (`sales` / `support` / `inquiry`
-  / `spam`) on the Pro tier, for routing submissions without writing
-  rules yourself.
-- **No per-submission metering** on the basic plan.
-
 ### Is there a free tier?
 
 Yes. AI spam filtering is enabled by default on every plan. AI intent
