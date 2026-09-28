@@ -3,6 +3,32 @@
 Receive SmartForm webhook events and forward every new submission to a Discord channel
 as a rich embed.
 
+## What your webhook receives
+
+SmartForm POSTs a JSON event to your webhook URL on every submission.
+The body mirrors the same field structure as the public form endpoint:
+
+**Your submission fields** — `name`, `email`, `message`, etc.
+exactly as the form sent them.
+
+**Reserved fields** — names starting with `_` are stripped before
+the webhook fires (they are control fields, not user data). The
+honeypot drop (`_gotcha` filled) means the webhook is **not** called
+— the submission is silently discarded.
+
+| Field | In webhook payload? | Notes |
+|---|---|---|
+| ``_gotcha`` | No | Drop trigger — never sent. |
+| ``_next`` | No | UX control, stripped. |
+| ``_subject`` | No | UX control, stripped. |
+| `submission_id` | Yes (added) | Server-generated UUID for idempotency. |
+| `is_spam` | Yes (added) | AI classification result. |
+| `intent` | Yes (added) | `sales` / `support` / `inquiry` / `spam` (Pro). |
+| `timestamp` | Yes (added) | Server time in ISO 8601. |
+
+Field names are Formspree-compatible — the SmartForm form
+endpoint and your webhook use the same conventions.
+
 ## How it works
 
 ```
@@ -114,20 +140,32 @@ curl -X POST http://localhost:3000/api/webhook \
   -H 'X-SmartForm-Signature: sha256=<compute locally with your secret>' \
   -d @sample-payload.json
 ```
-## Related examples
-[Slack webhook example](https://github.com/yanghuai123456/smartform-example-webhook-slack) | [SmartForm JS SDK](https://github.com/yanghuai123456/smartform-js)
 
 
 ## FAQ
 
 ### Why use this instead of Formspree?
 
-Both SmartForm and Formspree let you POST a plain HTML form to a hosted
-endpoint with no backend. SmartForm adds an AI spam filter (not just
-honeypots), AI intent classification (`sales` / `support` / `inquiry`)
-and high-value lead detection, with a free tier that includes the spam
-filter. Formspree charges per submission; SmartForm's spam filter is
-free on every plan.
+At the basic level, SmartForm and Formspree are very similar: get a
+form ID, POST a plain HTML form to a hosted endpoint with `_gotcha`
+for spam filtering, and the API delivers the submission. The reserved
+fields (`_gotcha`, `_next`, `_subject`, honeypot aliases) are
+Formspree-compatible — a migration does not require renaming
+anything.
+
+The differences are operational, not API surface:
+
+- **No email confirmation flow.** Formspree requires verifying your
+  domain before submissions reach your inbox; SmartForm submissions
+  land in your dashboard immediately.
+- **AI spam filtering on the free tier.** Formspree's free tier uses
+  only a honeypot field, which catches naive bots but lets semantic
+  spam through. SmartForm applies AI-based classification by default,
+  free of charge.
+- **AI intent classification** (`sales` / `support` / `inquiry`
+  / `spam`) on the Pro tier, for routing submissions without writing
+  rules yourself.
+- **No per-submission metering** on the basic plan.
 
 ### Is there a free tier?
 
