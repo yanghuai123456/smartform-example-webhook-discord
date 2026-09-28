@@ -1,4 +1,4 @@
-# SmartForm → Discord
+# Discord contact form webhook — Formspree alternative with AI spam filtering
 
 Receive SmartForm webhook events and forward every new submission to a Discord channel
 as a rich embed.
